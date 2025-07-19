@@ -5,19 +5,25 @@ import NotFound from "@/pages/NotFound";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Footer from "@/components/Footer";
 import ReportSummary from "./pages/ReportSummary";
+import About from "./components/About";
+import Header from "./components/Header";
 
 function AppLayout() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<MapSelectPage />} />
-        <Route path="/report-summary" element={<ReportSummary />} />
-        <Route path="/property-form" element={<PropertyForm />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<MapSelectPage />} />
+          <Route path="/report-summary" element={<ReportSummary />} />
+          <Route path="/property-form" element={<PropertyForm />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <Footer />
       <ScrollToTopButton />
-    </>
+    </div>
   );
 }
 
