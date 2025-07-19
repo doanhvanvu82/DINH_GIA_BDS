@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="w-full bg-blue-50 border-t border-blue-100 py-8 mt-12 text-center text-sm text-gray-700">
+    <footer className="w-full bg-blue-50 border-t border-blue-100 py-6 mt-8 text-center text-sm text-gray-700">
       <div className="container mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6 px-4">
         {/* Thông tin liên hệ */}
         <div className="flex flex-col gap-1 text-left">
@@ -22,7 +22,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="mt-6 text-xs text-gray-400">&copy; {new Date().getFullYear()} Định giá bất động sản Việt Nam. Made with ❤️.</div>
+      <div className="mt-6 text-xs text-gray-400">&copy; {new Date().getFullYear()} Định giá bất động sản Việt Nam - Skymap.</div>
     </footer>
   );
 };

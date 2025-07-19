@@ -26,16 +26,7 @@ export interface Amenity {
     plotNumber: string;
     shape: { lat: number; lng: number }[];
     fullAddress: string;
-    landType: string;
-    legalStatus: string;
-    amenities: Amenity[];
-    roadWidth: number; // in meters
-    maxRooms: number;
-    expansion: boolean; // Nở hậu
-    priceEstimate: PriceEstimate;
-    recentTransactions: Transaction[];
-    liquidityDays: number; // Tốc độ thanh khoản (số ngày)
-    averagePrice: number; // Giá trung bình khu vực
+    
   }
   
   // Bổ sung lượng lớn dữ liệu mẫu
@@ -55,32 +46,11 @@ export interface Amenity {
       { lat: 20.980320789122, lng: 105.75531714916 },
     ],
     fullAddress: "Thửa 25 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.3, type: "hospital" },
-      { name: "Trường THCS Dương Nội", distance: 1.6, type: "school" },
-      { name: "Chợ Dương Nội", distance: 1.1, type: "market" }
-    ],
-    roadWidth: 12,
-    maxRooms: 5,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 57000000,
-      totalValue: 12441390000,
-      confidence: 89
-    },
-    recentTransactions: [
-      { id: "tx013", date: "2025-03-20", area: 220, price: 12500000000, distance: 150, address: "Thửa 1 Tờ 0" },
-      { id: "tx014", date: "2025-04-10", area: 215, price: 12000000000, distance: 200, address: "Thửa 2 Tờ 0" }
-    ],
-    liquidityDays: 50,
-    averagePrice: 56500000
   },
   {
     id: "hn002",
     address: "Thửa 3 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",
-    area: 178.6,
+    area: 178.57,
     plotNumber: "3/82",
     shape: [
       { lat: 20.98055188515, lng: 105.75377704898 },
@@ -90,196 +60,9 @@ export interface Amenity {
       { lat: 20.98055188515, lng: 105.75377704898 }
     ],
     fullAddress: "Thửa 3 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.0, type: "hospital" },
-      { name: "Trường THPT Lê Lợi", distance: 1.5, type: "school" },
-      { name: "Chợ Hà Đông", distance: 1.0, type: "market" }
-    ],
-    roadWidth: 15,
-    maxRooms: 4,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 60000000,
-      totalValue: 10716000000,
-      confidence: 90
-    },
-    recentTransactions: [
-      { id: "tx003", date: "2025-03-10", area: 180, price: 11000000000, distance: 200, address: "Thửa 5 Tờ 82" },
-      { id: "tx004", date: "2025-04-15", area: 175, price: 10500000000, distance: 250, address: "Thửa 4 Tờ 82" }
-    ],
-    liquidityDays: 45,
-    averagePrice: 59500000
   },
-
-  // 2. Thửa 1 Tờ 89
   {
     id: "hn003",
-    address: "Thửa 1 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    area: 6675.1,
-    plotNumber: "1/89",
-    shape: [
-      { lat: 20.977598659932, lng: 105.75070525772 },
-      { lat: 20.977678026056, lng: 105.75071180908 },
-      { lat: 20.978477548447, lng: 105.75172185077 },
-      { lat: 20.978455966288, lng: 105.7518025267 },
-      { lat: 20.978215761425, lng: 105.75201463266 },
-      { lat: 20.978170074946, lng: 105.75201065339 },
-      { lat: 20.977370554223, lng: 105.75100061234 },
-      { lat: 20.977358456395, lng: 105.75091736432 },
-      { lat: 20.977598659932, lng: 105.75070525772 }
-    ],
-    fullAddress: "Thửa 1 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.5, type: "hospital" },
-      { name: "Trường THCS Dương Nội", distance: 1.8, type: "school" },
-      { name: "Chợ Dương Nội", distance: 1.2, type: "market" }
-    ],
-    roadWidth: 25,
-    maxRooms: 8,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 55000000,
-      totalValue: 367130500000,
-      confidence: 88
-    },
-    recentTransactions: [
-      { id: "tx005", date: "2025-02-25", area: 6700, price: 370000000000, distance: 300, address: "Thửa 2 Tờ 89" },
-      { id: "tx006", date: "2025-05-10", area: 6650, price: 365000000000, distance: 350, address: "Thửa 3 Tờ 89" }
-    ],
-    liquidityDays: 60,
-    averagePrice: 54500000
-  },
-
-  // 3. Thửa 63 Tờ 82
-  {
-    id: "hn004",
-    address: "Thửa 63 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",
-    area: 6659.7,
-    plotNumber: "63/82",
-    shape: [
-      { lat: 20.979414677375, lng: 105.75294561315 },
-      { lat: 20.979419754971, lng: 105.75302296078 },
-      { lat: 20.979171840211, lng: 105.75324204795 },
-      { lat: 20.979121278081, lng: 105.75323765914 },
-      { lat: 20.978441998359, lng: 105.75236813623 },
-      { lat: 20.978308800439, lng: 105.75219763112 },
-      { lat: 20.978318434675, lng: 105.75214315027 },
-      { lat: 20.978572600667, lng: 105.75191947749 },
-      { lat: 20.978636439362, lng: 105.75192412461 },
-      { lat: 20.979414677375, lng: 105.75294561315 }
-    ],
-    fullAddress: "Thửa 63 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện 103", distance: 3.0, type: "hospital" },
-      { name: "Trường Tiểu học Dương Nội", distance: 2.2, type: "school" },
-      { name: "Chợ Hà Đông", distance: 1.5, type: "market" }
-    ],
-    roadWidth: 22,
-    maxRooms: 7,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 58000000,
-      totalValue: 386262600000,
-      confidence: 89
-    },
-    recentTransactions: [
-      { id: "tx007", date: "2025-01-20", area: 6600, price: 380000000000, distance: 250, address: "Thửa 62 Tờ 82" },
-      { id: "tx008", date: "2025-03-05", area: 6700, price: 390000000000, distance: 300, address: "Thửa 64 Tờ 82" }
-    ],
-    liquidityDays: 55,
-    averagePrice: 57500000
-  },
-
-  // 4. Thửa 39 Tờ 89
-  {
-    id: "hn005",
-    address: "Thửa 39 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    area: 8100.9,
-    plotNumber: "39/89",
-    shape: [
-      { lat: 20.977481287348, lng: 105.75042760373 },
-      { lat: 20.977463948506, lng: 105.7505293619 },
-      { lat: 20.976438380692, lng: 105.75143708639 },
-      { lat: 20.976374638644, lng: 105.75143099752 },
-      { lat: 20.976189079434, lng: 105.75119272267 },
-      { lat: 20.976132046165, lng: 105.75111954092 },
-      { lat: 20.976135710291, lng: 105.75106695435 },
-      { lat: 20.976189844612, lng: 105.75101913993 },
-      { lat: 20.977171060207, lng: 105.75015264209 },
-      { lat: 20.977248674964, lng: 105.75014668222 },
-      { lat: 20.977481287348, lng: 105.75042760373 }
-    ],
-    fullAddress: "Thửa 39 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.8, type: "hospital" },
-      { name: "Trường THPT Nguyễn Huệ", distance: 2.0, type: "school" },
-      { name: "Chợ Dương Nội", distance: 1.3, type: "market" }
-    ],
-    roadWidth: 30,
-    maxRooms: 10,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 52000000,
-      totalValue: 421246800000,
-      confidence: 87
-    },
-    recentTransactions: [
-      { id: "tx009", date: "2025-04-01", area: 8000, price: 415000000000, distance: 400, address: "Thửa 40 Tờ 89" },
-      { id: "tx010", date: "2025-05-20", area: 8200, price: 430000000000, distance: 350, address: "Thửa 38 Tờ 89" }
-    ],
-    liquidityDays: 65,
-    averagePrice: 51500000
-  },
-
-  // 5. Thửa 38 Tờ 89
-  {
-    id: "hn006",
-    address: "Thửa 38 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    area: 3218.3,
-    plotNumber: "38/89",
-    shape: [
-      { lat: 20.976328725565, lng: 105.74965345129 },
-      { lat: 20.976330061581, lng: 105.74963720523 },
-      { lat: 20.976852214603, lng: 105.74963980947 },
-      { lat: 20.9771245473, lng: 105.74998757378 },
-      { lat: 20.97711484137, lng: 105.75005849914 },
-      { lat: 20.976861314662, lng: 105.75028111837 },
-      { lat: 20.976812026238, lng: 105.75027462126 },
-      { lat: 20.976328725565, lng: 105.74965345129 }
-    ],
-    fullAddress: "Thửa 38 Tờ 89, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện 103", distance: 3.2, type: "hospital" },
-      { name: "Trường THCS Dương Nội", distance: 1.7, type: "school" },
-      { name: "Chợ Hà Đông", distance: 1.4, type: "market" }
-    ],
-    roadWidth: 18,
-    maxRooms: 6,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 54000000,
-      totalValue: 173788200000,
-      confidence: 88
-    },
-    recentTransactions: [
-      { id: "tx011", date: "2025-03-15", area: 3200, price: 170000000000, distance: 200, address: "Thửa 37 Tờ 89" },
-      { id: "tx012", date: "2025-04-25", area: 3250, price: 175000000000, distance: 250, address: "Thửa 39 Tờ 89" }
-    ],
-    liquidityDays: 50,
-    averagePrice: 53500000
-  },
-  {
-    id: "hn007",
     address: "Thửa 33 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
     area: 271.1,
     plotNumber: "33/83",
@@ -293,30 +76,9 @@ export interface Amenity {
       { lat: 20.980171914014, lng: 105.75552557567 }
     ],
     fullAddress: "Thửa 33 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.4, type: "hospital" },
-      { name: "Trường THCS Dương Nội", distance: 1.5, type: "school" },
-      { name: "Chợ Dương Nội", distance: 1.2, type: "market" }
-    ],
-    roadWidth: 10,
-    maxRooms: 6,
-    expansion: false,
-    priceEstimate: {
-      pricePerM2: 56500000,
-      totalValue: 15306615000,
-      confidence: 88
-    },
-    recentTransactions: [
-      { id: "tx021", date: "2025-03-12", area: 270, price: 15200000000, distance: 130, address: "Thửa 4 Tờ 83" },
-      { id: "tx022", date: "2025-04-02", area: 275, price: 15500000000, distance: 180, address: "Thửa 5 Tờ 83" }
-    ],
-    liquidityDays: 52,
-    averagePrice: 56200000
   },
   {
-    id: "hn008",
+    id: "hn004",
     address: "Thửa 34 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
     area: 226,
     plotNumber: "34/83",
@@ -328,26 +90,740 @@ export interface Amenity {
       { lat: 20.980173095452, lng: 105.75552394668 }
     ],
     fullAddress: "Thửa 34 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
-    landType: "Đất ở tại đô thị",
-    legalStatus: "Sổ đỏ chính chủ",
-    amenities: [
-      { name: "Bệnh viện Hà Đông", distance: 2.2, type: "hospital" },
-      { name: "Trường THCS Dương Nội", distance: 1.4, type: "school" },
-      { name: "Chợ Dương Nội", distance: 1.0, type: "market" }
+  },
+  {
+    id: "hn005",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 252.18,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98044653, lng: 105.75364329 },
+      { lat: 20.98037252, lng: 105.75354925 },
+      { lat: 20.98038756, lng: 105.75349922 },
+      { lat: 20.98053263, lng: 105.75345571 },
+      { lat: 20.98058353, lng: 105.75352168 },
+      { lat: 20.98044653, lng: 105.75364329 }  
     ],
-    roadWidth: 8,
-    maxRooms: 5,
-    expansion: true,
-    priceEstimate: {
-      pricePerM2: 57000000,
-      totalValue: 12882000000,
-      confidence: 90
-    },
-    recentTransactions: [
-      { id: "tx023", date: "2025-03-25", area: 225, price: 12750000000, distance: 100, address: "Thửa 6 Tờ 83" },
-      { id: "tx024", date: "2025-04-15", area: 230, price: 13100000000, distance: 160, address: "Thửa 7 Tờ 83" }
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn006",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 177.64,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.9804979, lng: 105.75371078 },
+      { lat: 20.98044653, lng: 105.75364329 },
+      { lat: 20.98058353, lng: 105.75352168 },
+      { lat: 20.98063474, lng: 105.75358807 },
+      { lat: 20.9804979, lng: 105.75371078 } 
     ],
-    liquidityDays: 48,
-    averagePrice: 56800000
-  }  
-  ];
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn007",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 177.87,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98060336, lng: 105.75384181 },
+      { lat: 20.98054963, lng: 105.75377682 },
+      { lat: 20.98068747, lng: 105.75365489 },
+      { lat: 20.98073992, lng: 105.75372132 },
+      { lat: 20.98060336, lng: 105.75384181 } 
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn008",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.38,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98065355, lng: 105.75391025 },
+      { lat: 20.98060336, lng: 105.75384181 },
+      { lat: 20.98073992, lng: 105.75372132 },
+      { lat: 20.9807922,  lng: 105.75378755 },
+      { lat: 20.98065355, lng: 105.75391025 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn009",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 179.79,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98070546, lng: 105.75397687 },
+      { lat: 20.98069082, lng: 105.75395804 },
+      { lat: 20.98065355, lng: 105.75391025 },
+      { lat: 20.9807922,  lng: 105.75378755 },
+      { lat: 20.98084402, lng: 105.75385466 },
+      { lat: 20.98070546, lng: 105.75397687 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn010",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.88,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98075755, lng: 105.75404359 },
+      { lat: 20.98070546, lng: 105.75397687 },
+      { lat: 20.98084402, lng: 105.75385466 },
+      { lat: 20.98089548, lng: 105.75392108 },
+      { lat: 20.98075755, lng: 105.75404359 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn011",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.36,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98080938, lng: 105.75411001 },
+      { lat: 20.98075755, lng: 105.75404359 },
+      { lat: 20.98089548, lng: 105.75392108 },
+      { lat: 20.98094712, lng: 105.7539875 },
+      { lat: 20.98080938, lng: 105.75411001 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn012",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 179.2,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981001645083, lng: 105.75405464799 },
+      { lat: 20.980863631597, lng: 105.75417667191 },
+      { lat: 20.980811627984, lng: 105.75411024406 },
+      { lat: 20.980949372585, lng: 105.75398773791 },
+      { lat: 20.981001645083, lng: 105.75405464799 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn013",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 179.96,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.9809132, lng: 105.75424354 },
+      { lat: 20.98086138, lng: 105.75417644 },
+      { lat: 20.9809994, lng: 105.75405442 },
+      { lat: 20.98105194, lng: 105.75412104 },
+      { lat: 20.9809132, lng: 105.75424354 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn014",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 180.39,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98096548, lng: 105.75431007 },
+      { lat: 20.9809132, lng: 105.75424354 },
+      { lat: 20.98105194, lng: 105.75412104 },
+      { lat: 20.98110403, lng: 105.75418881 },
+      { lat: 20.98096548, lng: 105.75431007 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn015",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 175.9,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981158107506, lng: 105.75425393415 },
+      { lat: 20.981021092536, lng: 105.75437480894 },
+      { lat: 20.980967725657, lng: 105.75431029757 },
+      { lat: 20.981106277762, lng: 105.75418904578 },
+      { lat: 20.981158107506, lng: 105.75425393415 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn016",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981209660722, lng: 105.75432007143 },
+      { lat: 20.981071641515, lng: 105.75444334547 },
+      { lat: 20.981021092536, lng: 105.75437480894 },
+      { lat: 20.981158107506, lng: 105.75425393415 },
+      { lat: 20.981209660722, lng: 105.75432007143 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn017",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 179.67,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98112094, lng: 105.75450944 },
+      { lat: 20.98108978, lng: 105.75446938 },
+      { lat: 20.98106939, lng: 105.75444311 },
+      { lat: 20.98120741, lng: 105.75431984 },
+      { lat: 20.9812595, lng: 105.75438723 },
+      { lat: 20.98112094, lng: 105.75450944 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn018",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.6,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98117664624, lng: 105.75457524496 },
+      { lat: 20.981123193805, lng: 105.75450967512 },
+      { lat: 20.981261750307, lng: 105.75438746169 },
+      { lat: 20.981313754226, lng: 105.75445379367 },
+      { lat: 20.98117664624, lng: 105.75457524496 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn019",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 176.36,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98122912, lng: 105.75463924 },
+      { lat: 20.98122337, lng: 105.75463238 },
+      { lat: 20.9811744, lng: 105.75457501 },
+      { lat: 20.98131151, lng: 105.75445356 },
+      { lat: 20.9813636, lng: 105.75452057 },
+      { lat: 20.98122912, lng: 105.75463924 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn020",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 171.08,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98128457, lng: 105.75470232 },
+      { lat: 20.98122912, lng: 105.75463924 },
+      { lat: 20.9813636, lng: 105.75452057 },
+      { lat: 20.98141533, lng: 105.75458709 },
+      { lat: 20.98128457, lng: 105.75470232 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn021",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 168.6,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981469309949, lng: 105.75465374931 },
+      { lat: 20.981345244852, lng: 105.75476699517 },
+      { lat: 20.981303715013, lng: 105.75472187375 },
+      { lat: 20.981286819667, lng: 105.75470255428 },
+      { lat: 20.981417577504, lng: 105.75458732239 },
+      { lat: 20.981469309949, lng: 105.75465374931 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn022",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 267.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98145304, lng: 105.75488205 },
+      { lat: 20.98141931, lng: 105.75484928 },
+      { lat: 20.981343, lng: 105.75476676 },
+      { lat: 20.98146706, lng: 105.75465352 },
+      { lat: 20.98152607, lng: 105.75472921 },
+      { lat: 20.98154902, lng: 105.75474751 },
+      { lat: 20.98145304, lng: 105.75488205 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn023",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 163.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981617240489, lng: 105.75480106029 },
+      { lat: 20.981515729371, lng: 105.75494077089 },
+      { lat: 20.98145529075, lng: 105.75488228249 },
+      { lat: 20.981551269163, lng: 105.75474773746 },
+      { lat: 20.981617240489, lng: 105.75480106029 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn024",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 167.2,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981681595799, lng: 105.75485216306 },
+      { lat: 20.981578164433, lng: 105.75499715357 },
+      { lat: 20.981561252073, lng: 105.75498168087 },
+      { lat: 20.981515729371, lng: 105.75494077089 },
+      { lat: 20.981617240489, lng: 105.75480106029 },
+      { lat: 20.981681595799, lng: 105.75485216306 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn025",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 170.87,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98163881, lng: 105.75505215 },
+      { lat: 20.98157592, lng: 105.75499692 },
+      { lat: 20.98167935, lng: 105.75485193 },
+      { lat: 20.98174297, lng: 105.75490409 },
+      { lat: 20.98163881, lng: 105.75505215 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn026",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 175.5,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981811016586, lng: 105.75495716133 },
+      { lat: 20.981703862315, lng: 105.75510655715 },
+      { lat: 20.981648520113, lng: 105.75505982735 },
+      { lat: 20.981641056201, lng: 105.7550523845 },
+      { lat: 20.981745223828, lng: 105.75490432013 },
+      { lat: 20.981811016586, lng: 105.75495716133 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn027",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 176.4,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981875368008, lng: 105.75500912978 },
+      { lat: 20.981767483015, lng: 105.75516034924 },
+      { lat: 20.981760731026, lng: 105.75515531429 },
+      { lat: 20.981703862315, lng: 105.75510655715 },
+      { lat: 20.981811016586, lng: 105.75495716133 },
+      { lat: 20.981875368008, lng: 105.75500912978 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn028",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 177.9,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981940530606, lng: 105.75506148704 },
+      { lat: 20.981832288115, lng: 105.75521183917 },
+      { lat: 20.981822020814, lng: 105.7552051516 },
+      { lat: 20.981767483015, lng: 105.75516034924 },
+      { lat: 20.981875368008, lng: 105.75500912978 },
+      { lat: 20.981940530606, lng: 105.75506148704 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn029",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 178.5,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98200524797, lng: 105.7551123995 },
+      { lat: 20.981895995689, lng: 105.75526640117 },
+      { lat: 20.981832288115, lng: 105.75521183917 },
+      { lat: 20.981940530606, lng: 105.75506148704 },
+      { lat: 20.98200524797, lng: 105.7551123995 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn030",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 181.67,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.981959, lng: 105.7553191 },
+      { lat: 20.98189375, lng: 105.75526617 },
+      { lat: 20.982003, lng: 105.75511217 },
+      { lat: 20.9820678, lng: 105.75516491 },
+      { lat: 20.981959, lng: 105.7553191 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn031",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 181.26,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98202344, lng: 105.75537146 },
+      { lat: 20.981959, lng: 105.7553191 },
+      { lat: 20.9820678, lng: 105.75516491 },
+      { lat: 20.9821336, lng: 105.75521602 },
+      { lat: 20.98202344, lng: 105.75537146 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn032",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 180.4,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.982058268197, lng: 105.75539762812 },
+      { lat: 20.982025685889, lng: 105.75537168982 },
+      { lat: 20.982135847881, lng: 105.75521625007 },
+      { lat: 20.982205248724, lng: 105.7552701676 },
+      { lat: 20.982120721699, lng: 105.75538870943 },
+      { lat: 20.982058268197, lng: 105.75539762812 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn033",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 283.5,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980880633747, lng: 105.75492642413 },
+      { lat: 20.980700444229, lng: 105.75478212544 },
+      { lat: 20.980713169428, lng: 105.7547641089 },
+      { lat: 20.980778618452, lng: 105.75467028454 },
+      { lat: 20.980905089831, lng: 105.75482941247 },
+      { lat: 20.98090744625, lng: 105.75488876292 },
+      { lat: 20.980880633747, lng: 105.75492642413 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn034",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 224.7,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980831642849, lng: 105.75499551856 },
+      { lat: 20.980651363493, lng: 105.75485112322 },
+      { lat: 20.980700444229, lng: 105.75478212544 },
+      { lat: 20.980880633747, lng: 105.75492642413 },
+      { lat: 20.980831642849, lng: 105.75499551856 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn035",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 224.7,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980602372626, lng: 105.75492021757 },
+      { lat: 20.980651363493, lng: 105.75485112322 },
+      { lat: 20.980831642849, lng: 105.75499551856 },
+      { lat: 20.98078265235, lng: 105.75506451678 },
+      { lat: 20.980602372626, lng: 105.75492021757 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn036",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 224.7,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980733571076, lng: 105.75513361067 },
+      { lat: 20.980553381733, lng: 105.75498931188 },
+      { lat: 20.980565833855, lng: 105.75497177486 },
+      { lat: 20.980602372626, lng: 105.75492021757 },
+      { lat: 20.980782562028, lng: 105.75506451632 },
+      { lat: 20.980733571076, lng: 105.75513361067 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn037",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 249.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980679127091, lng: 105.7552102752 },
+      { lat: 20.980499028135, lng: 105.75506597683 },
+      { lat: 20.980516842942, lng: 105.75504086914 },
+      { lat: 20.980553381733, lng: 105.75498931188 },
+      { lat: 20.980733571076, lng: 105.75513361067 },
+      { lat: 20.980687580337, lng: 105.7551982961 },
+      { lat: 20.980679127091, lng: 105.7552102752 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn038",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 250.06,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98062243, lng: 105.75528699 },
+      { lat: 20.98044224, lng: 105.7551426 },
+      { lat: 20.98046551, lng: 105.75510973 },
+      { lat: 20.98049678, lng: 105.75506574 },
+      { lat: 20.98067688, lng: 105.75521004 },
+      { lat: 20.98062243, lng: 105.75528699 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn039",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 250.39,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.9805679, lng: 105.75536395 },
+      { lat: 20.98038762, lng: 105.75521955 },
+      { lat: 20.98041661, lng: 105.75517873 },
+      { lat: 20.98044224, lng: 105.7551426 },
+      { lat: 20.98062243, lng: 105.75528699 },
+      { lat: 20.9805679, lng: 105.75536395 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn040",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 249.26,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98051354, lng: 105.75544052 },
+      { lat: 20.98033326, lng: 105.75529612 },
+      { lat: 20.98036762, lng: 105.75524773 },
+      { lat: 20.98038762, lng: 105.75521955 },
+      { lat: 20.9805679, lng: 105.75536395 },
+      { lat: 20.98051354, lng: 105.75544052 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn041",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 248.98,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98045901, lng: 105.75551689 },
+      { lat: 20.98027891, lng: 105.75537259 },
+      { lat: 20.98031854, lng: 105.75531692 },
+      { lat: 20.98033326, lng: 105.75529612 },
+      { lat: 20.98051354, lng: 105.75544052 },
+      { lat: 20.98045901, lng: 105.75551689 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn042",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 248.9,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98040295, lng: 105.75559249 },
+      { lat: 20.98022429, lng: 105.75544935 },
+      { lat: 20.98026946, lng: 105.75538582 },
+      { lat: 20.98027891, lng: 105.75537259 },
+      { lat: 20.98045901, lng: 105.75551689 },
+      { lat: 20.98040295, lng: 105.75559249 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn043",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 247.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980352192798, lng: 105.75566997132 },
+      { lat: 20.980171914014, lng: 105.75552557567 },
+      { lat: 20.980173095452, lng: 105.75552394668 },
+      { lat: 20.980222718382, lng: 105.75545495208 },
+      { lat: 20.980226535792, lng: 105.75544958561 },
+      { lat: 20.980405194387, lng: 105.75559272284 },
+      { lat: 20.980352192798, lng: 105.75566997132 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn044",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 260,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980256293416, lng: 105.7557254614 },
+      { lat: 20.980112196204, lng: 105.75561009939 },
+      { lat: 20.980171914014, lng: 105.75552557567 },
+      { lat: 20.980352192798, lng: 105.75566997132 },
+      { lat: 20.980322657242, lng: 105.7557105999 },
+      { lat: 20.980256293416, lng: 105.7557254614 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+  },
+  {
+    id: "hn045",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 224.97,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98022429, lng: 105.75544935 },
+      { lat: 20.98022047, lng: 105.75545472 },
+      { lat: 20.98003974, lng: 105.75530994 },
+      { lat: 20.98008864, lng: 105.75524104 },
+      { lat: 20.98026946, lng: 105.75538582 },
+      { lat: 20.98022429, lng: 105.75544935 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn046",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.3,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980271708605, lng: 105.75538605041 },
+      { lat: 20.980090889338, lng: 105.75524126777 },
+      { lat: 20.980139879902, lng: 105.75517226993 },
+      { lat: 20.980320789122, lng: 105.75531714916 },
+      { lat: 20.980281160949, lng: 105.75537282614 },
+      { lat: 20.980271708605, lng: 105.75538605041 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn047",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.39,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98038762, lng: 105.75521955 },
+      { lat: 20.98036762, lng: 105.75524773 },
+      { lat: 20.98018671, lng: 105.75510294 },
+      { lat: 20.98023579, lng: 105.75503395 },
+      { lat: 20.98041661, lng: 105.75517873 },
+      { lat: 20.98038762, lng: 105.75521955 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn048",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.18,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98044224, lng: 105.7551426 },
+      { lat: 20.98041661, lng: 105.75517873 },
+      { lat: 20.98023579, lng: 105.75503395 },
+      { lat: 20.98028478, lng: 105.75496495 },
+      { lat: 20.98046551, lng: 105.75510973 },
+      { lat: 20.98044224, lng: 105.7551426 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn049",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.57,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98049678, lng: 105.75506574 },
+      { lat: 20.98046551, lng: 105.75510973 },
+      { lat: 20.98028478, lng: 105.75496495 },
+      { lat: 20.98033386, lng: 105.75489585 },
+      { lat: 20.98051459, lng: 105.75504064 },
+      { lat: 20.98049678, lng: 105.75506574 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn050",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.4,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980516842942, lng: 105.75504086914 },
+      { lat: 20.980336113704, lng: 105.75489608711 },
+      { lat: 20.980385104559, lng: 105.75482699287 },
+      { lat: 20.980565833855, lng: 105.75497177486 },
+      { lat: 20.980553381733, lng: 105.75498931188 },
+      { lat: 20.980516842942, lng: 105.75504086914 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn051",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 225.05,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98060012, lng: 105.75491999 },
+      { lat: 20.98056358, lng: 105.75497154 },
+      { lat: 20.98038286, lng: 105.75482676 },
+      { lat: 20.98043184, lng: 105.75475786 },
+      { lat: 20.98061252, lng: 105.7549025 },
+      { lat: 20.98060012, lng: 105.75491999 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn052",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 227.58,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98064916, lng: 105.75485093 },
+      { lat: 20.98061252, lng: 105.7549025 },
+      { lat: 20.98043184, lng: 105.75475786 },
+      { lat: 20.98047913, lng: 105.75468683 },
+      { lat: 20.98066173, lng: 105.75483315 },
+      { lat: 20.98064916, lng: 105.75485093 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn053",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 227.2,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.980663997098, lng: 105.75483339474 },
+      { lat: 20.980481377736, lng: 105.75468706456 },
+      { lat: 20.980532620173, lng: 105.75461942407 },
+      { lat: 20.980713169428, lng: 105.7547641089 },
+      { lat: 20.980663997098, lng: 105.75483339474 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  },
+  {
+    id: "hn054",
+    address: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
+    area: 344.19,
+    plotNumber: "0/0",
+    shape: [
+      { lat: 20.98071092, lng: 105.75476388 },
+      { lat: 20.98053037, lng: 105.75461919 },
+      { lat: 20.98057991, lng: 105.75454943 },
+      { lat: 20.98067138, lng: 105.75453585 },
+      { lat: 20.98068817, lng: 105.75455728 },
+      { lat: 20.98077637, lng: 105.75467005 },
+      { lat: 20.98071092, lng: 105.75476388 }
+    ],
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội"
+  }   
+];

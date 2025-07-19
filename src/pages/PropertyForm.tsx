@@ -4,6 +4,8 @@ import sampleCompareData from "../data/sampleCompareData";
 import AI_DATA from "../data/sampleAIData";
 import LoadingOverlay from "../components/LoadingOverlay";
 import { sampleFinalDataTD, sampleFinalDataAI } from "../data/sampleFinalData";
+import "./index.css";
+import Header from "../components/Header";
 
 const COLUMN_COUNT = 5; // TS thẩm định + Định giá AI + 3 TS so sánh
 const COLUMN_LABELS = [
@@ -14,11 +16,11 @@ const COLUMN_LABELS = [
   "TS SO SÁNH 3"
 ];
 
-function isNumberValue(val: string) {
-  // Kiểm tra giá trị là số (có thể có dấu phẩy, chấm, hoặc chỉ số)
-  return /^[\d,.]+$/.test(val.trim());
+function isNumberValue(val: string): boolean {
+  if (!val) return false;
+  // Nhận nếu chỉ chứa số, dấu chấm, dấu phẩy, dấu /, dấu trừ, dấu %, khoảng trắng
+  return /^-?[\d.,/%\s]+$/.test(val.trim());
 }
-
 
 // Định nghĩa các trường cho từng nhóm (đã cập nhật với group)
 const GENERAL_FIELDS = [
@@ -264,6 +266,8 @@ export default function PropertyForm() {
   const renderTable = (fields, data, setField, title) => {
     const isFinalTable = title === "Kết quả & ghi chú";
     return (
+      <>
+      <Header title="BẢNG SO SÁNH TÀI SẢN ĐỊNH GIÁ" />
       <div className="overflow-x-auto w-full mb-8">
         <div className="bg-card rounded-lg shadow-form-md border border-border overflow-hidden">
           <table className="min-w-[900px] w-full table-fixed">
@@ -302,67 +306,110 @@ export default function PropertyForm() {
                           <td className="p-3 bg-table-accent font-medium text-sm text-foreground border-r border-border">
                             {subField.label}
                           </td>
-                          {data.map((col, colIdx) => (
-                            <td
-                              key={colIdx}
-                              className={
-                                isFinalTable
-                                  ? "p-2 border-r border-border bg-gray-50"
-                                  : `p-2 border-r border-border bg-white ${colIdx === 1 || colIdx === 2 || colIdx === 3 ? "bg-input-readonly" : ""}`
-                              }
-                            >
-                              <input
-                                className={
-                                  isFinalTable
-                                    ? "w-full px-2 py-1 text-sm rounded-md border-none bg-gray-50 cursor-not-allowed"
-                                    : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
-                                        colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
-                                      } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""}`
+                          {data.map((col, colIdx) => {
+                            const isValueField = subField.key.endsWith('_value');
+                            const isRatioField = subField.key.endsWith('_ratio');
+                            const isAdjustField = subField.key.endsWith('_adjust');
+                            const isPriceField = subField.key.endsWith('_price');
+
+                            // Lấy prefix để xác định các trường cùng tiêu chí
+                            const prefix = subField.key.replace(/_(value|ratio|adjust|price)$/, '');
+                            const valueKey = `${prefix}_value`;
+                            const ratioKey = `${prefix}_ratio`;
+                            const adjustKey = `${prefix}_adjust`;
+                            const priceKey = `${prefix}_price`;
+
+                            let value = col[subField.key] || "";
+                            let readOnly = false;
+                            let onChange = (e) => setField(colIdx, subField.key, e.target.value);
+
+                            // Trường Thông số cột AI: readonly, luôn copy từ cột thẩm định
+                            if (isValueField && colIdx === 1) {
+                              value = data[0][subField.key] || "";
+                              readOnly = true;
+                              onChange = undefined;
+                            }
+
+                            // Trường mức điều chỉnh và giá sau điều chỉnh: readonly
+                            if (isAdjustField || isPriceField) {
+                              readOnly = true;
+                              onChange = undefined;
+                              // Chỉ sinh tự động ở cột thẩm định (colIdx === 0)
+                              if (colIdx === 0) {
+                                const valueVal = col[valueKey];
+                                const ratioVal = col[ratioKey];
+                                if (valueVal && ratioVal) {
+                                  // Sinh dữ liệu cố định
+                                  const mock = getMockAdjustAndPrice(valueVal, ratioVal);
+                                  if (isAdjustField) value = mock.adjust;
+                                  if (isPriceField) value = mock.price;
                                 }
-                                value={col[subField.key] || ""}
-                                onChange={isFinalTable ? undefined : (e => setField(colIdx, subField.key, e.target.value))}
-                                placeholder={subField.label}
-                                readOnly={isFinalTable ? true : (colIdx === 1 || colIdx === 2 || colIdx === 3)}
-                              />
-                            </td>
-                          ))}
+                              }
+                            }
+
+                            return (
+                              <td key={colIdx} className={isFinalTable ? "p-2 border-r border-border bg-gray-50" : `p-2 border-r border-border bg-white ${colIdx === 1 || colIdx === 2 || colIdx === 3 ? "bg-input-readonly" : ""}`}>
+                                <input
+                                  className={
+                                    isFinalTable
+                                      ? "w-full px-2 py-1 text-sm rounded-md border-none bg-input-readonly cursor-not-allowed text-black " +
+                                        (isNumberValue(value) ? "text-right" : "text-left") +
+                                        " placeholder:text-[13px] placeholder:opacity-90 placeholder:text-gray-700"
+                                      : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-black font-normal 
+                    placeholder:text-[13px] placeholder:text-gray-700 placeholder:opacity-90 
+                    placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
+                      colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
+                    } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""} ${
+                      isNumberValue(value) ? "text-right" : "text-left"
+                    }`
+                                  }
+                                  value={isNumberValue(value) ? formatNumber(value) : value}
+                                  onChange={onChange}
+                                  placeholder={subField.label}
+                                  readOnly={readOnly}
+                                />
+                              </td>
+                            );
+                          })}
                         </tr>
                       ))}
                     </Fragment>
                   );
                 }
 
+                // Field thường
                 return (
                   <tr key={fieldOrGroup.key} className="border-b border-border">
                     <td colSpan={2} className="p-3 bg-table-accent font-medium text-sm text-foreground border-r border-border">
                       {fieldOrGroup.label}
                     </td>
                     {data.map((col, colIdx) => (
-                      <td
-                        key={colIdx}
-                        className={
-                          isFinalTable
-                            ? "p-2 border-r border-border bg-input-readonly"
-                            : "p-2 border-r border-border bg-white"
-                        }
-                      >
+                      <td key={colIdx} className={isFinalTable ? "p-2 border-r border-border bg-input-readonly" : "p-2 border-r border-border bg-white"}>
                         <input
                           className={
                             isFinalTable
-                              ? "w-full px-2 py-1 text-sm rounded-md border-none bg-input-readonly cursor-not-allowed  text-foreground"
-                              : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-foreground font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
-                                  colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
-                                } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""} ${
-                                isNumberValue(col[fieldOrGroup.key] || "") ? "text-right" : "text-left"
-                              }`
-                          }
-                          value={col[fieldOrGroup.key] || ""}
-                          onChange={isFinalTable ? undefined : (e => setField(colIdx, fieldOrGroup.key, e.target.value))}
-                          placeholder={fieldOrGroup.label}
-                          readOnly={isFinalTable ? true : (colIdx === 1 || colIdx === 2 || colIdx === 3)}
-                        />
-                      </td>
-                    ))}
+                              ? "w-full px-2 py-1 text-sm rounded-md border-none bg-input-readonly cursor-not-allowed text-black " +
+                                (isNumberValue(col[fieldOrGroup.key] || "") ? "text-right" : "text-left") +
+                                " placeholder:text-[13px] placeholder:opacity-90 placeholder:text-gray-700"
+                              : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-black font-normal 
+        placeholder:text-[13px] placeholder:text-gray-700 placeholder:opacity-90 
+        placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
+            colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
+          } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""} ${
+            isNumberValue(col[fieldOrGroup.key] || "") ? "text-right" : "text-left"
+          }`
+                        }
+                        value={
+                          isNumberValue(col[fieldOrGroup.key] || "")
+                            ? formatNumber(col[fieldOrGroup.key] || "")
+                            : col[fieldOrGroup.key] || ""
+                        }
+                        onChange={isFinalTable ? undefined : (e => setField(colIdx, fieldOrGroup.key, e.target.value))}
+                        placeholder={fieldOrGroup.label}
+                        readOnly={isFinalTable ? true : (colIdx === 1 || colIdx === 2 || colIdx === 3)}
+                      />
+                    </td>
+                  ))}
                   </tr>
                 );
               })}
@@ -370,6 +417,7 @@ export default function PropertyForm() {
           </table>
         </div>
       </div>
+      </>
     );
   };
 
@@ -382,7 +430,6 @@ export default function PropertyForm() {
     
     // Các bước loading
     const loadingSteps = [
-      "Đang tiến hành định giá...",
       "Đang khởi tạo mô hình AI...",
       "Đang phân tích thông tin tài sản...",
       "Đang thu thập dữ liệu thị trường...",
@@ -397,7 +444,7 @@ export default function PropertyForm() {
     // Giai đoạn 1: Loading với các bước
     for (let i = 0; i < loadingSteps.length; i++) {
       setLoadingStep(loadingSteps[i]);
-      await new Promise(resolve => setTimeout(resolve, 3000)); // tăng từ 800 lên 1400ms
+      await new Promise(resolve => setTimeout(resolve, 1900)); // tăng từ 800 lên 1400ms
     }
 
     // Giai đoạn 2: Fill dữ liệu từ từ
@@ -416,7 +463,7 @@ export default function PropertyForm() {
       setCurrentFillIndex(i);
       
       // Delay để tạo hiệu ứng
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 100));
       
       // Fill dữ liệu vào cột AI (index 1)
       if (field.table === 'general') {
@@ -455,16 +502,10 @@ export default function PropertyForm() {
       {isLoading && <LoadingOverlay loadingStep={loadingStep} />}
       {isSaving && <LoadingOverlay loadingStep="Đang tiến hành lưu báo cáo..." />}
 
-      <div className="max-w-[1800px] mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            BẢNG SO SÁNH TÀI SẢN ĐỊNH GIÁ
-          </h1>
-          <div className="h-1 w-16 bg-primary rounded-full"></div>
-        </div>
-        
-        <div className="space-y-8">
-          <section>
+      <div className="max-w-[1800px] mx-auto mt-14">
+       
+        <div className="space-y-8 ">
+          <section >
             <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center">
               <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">I</span>
               ĐIỀU CHỈNH ĐỊNH LƯỢNG
@@ -479,6 +520,13 @@ export default function PropertyForm() {
               BẢNG ĐIỀU CHỈNH VÀ THÔNG SỐ KỸ THUẬT
             </h2>
             {renderTable(ADJUST_FIELDS, adjust, setAdjustField, "CÁC TIÊU CHÍ")}
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center">
+              <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">III</span>
+              KẾT QUẢ & GHI CHÚ
+            </h2>
             {renderTable(FINAL_FIELDS, final, () => {}, "Kết quả & ghi chú")}
           </section>
         </div>
@@ -516,4 +564,55 @@ export default function PropertyForm() {
       </div>
     </div>
   );
+}
+
+function formatNumber(val: string): string {
+  if (!val) return "";
+
+  // XÓA TOÀN BỘ dấu `,` NGƯỜI DÙNG NHẬP SAI
+  const cleaned = val.replace(/,/g, '');
+
+  // TÁCH PHẦN NGUYÊN và THẬP PHÂN
+  const [intPartRaw, decimalPart] = cleaned.split('.');
+
+  // KIỂM TRA DẤU ÂM
+  const isNegative = intPartRaw.startsWith('-');
+  const intPart = isNegative ? intPartRaw.slice(1) : intPartRaw;
+
+  // NẾU PHẦN NGUYÊN KHÔNG PHẢI SỐ → trả nguyên gốc
+  if (!/^\d+$/.test(intPart)) return val;
+
+  // FORMAT CHUẨN bằng BigInt
+  const intFormatted = (isNegative ? '-' : '') + BigInt(intPart).toLocaleString('en-US');
+
+  // GHÉP LẠI KẾT QUẢ
+  if (decimalPart !== undefined) {
+    return `${intFormatted}.${decimalPart}`;
+  } else if (val.endsWith('.')) {
+    return `${intFormatted}.`;
+  } else {
+    return intFormatted;
+  }
+}
+
+
+
+
+function getMockAdjustAndPrice(value: string, ratio: string) {
+  // Chuyển về số, nếu không phải số thì dùng số bí mật
+  const SECRET_NUMBER = 1598746654;
+  let v = parseFloat(value.replace(/,/g, ''));
+  if (isNaN(v)) v = SECRET_NUMBER;
+  let r = parseFloat(ratio.replace(/,/g, ''));
+  if (isNaN(r)) r = 7.77;
+
+  // Công thức phức tạp, khó đoán
+  const a = Math.sin(v / 1000) * Math.log(r + 10) + Math.sqrt(Math.abs(v * r));
+  const b = Math.abs(Math.cos(r / 10) * v * 1.13 + Math.pow(r, 1.2) - 1234);
+
+  // Thêm hệ số bí mật và làm tròn
+  const adjust = (a * 0.2345 + b * 0.9876 ).toFixed(0);
+  const price = (v + Number(adjust) + Math.round(r * 123.45) % 999).toFixed(0);
+
+  return { adjust, price };
 }

@@ -52,12 +52,6 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom form colors
-				'table-header': 'hsl(var(--table-header))',
-				'table-accent': 'hsl(var(--table-accent))',
-				'form-background': 'hsl(var(--form-background))',
-				'group-header': 'hsl(var(--group-header))',
-				'input-readonly': 'hsl(var(--input-readonly))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -67,7 +61,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				header: {
+					bg: 'hsl(var(--header-bg))',
+					'top-bg': 'hsl(var(--header-top-bg))',
+					text: 'hsl(var(--header-text))',
+					link: 'hsl(var(--header-link))',
+					'link-hover': 'hsl(var(--header-link-hover))'
 				}
+			},
+			backgroundImage: {
+				'gradient-header': 'var(--gradient-header)'
+			},
+			boxShadow: {
+				'header': 'var(--shadow-header)',
+				'header-button': 'var(--shadow-button)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -95,11 +103,6 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
-			},
-			boxShadow: {
-				'form': 'var(--shadow-sm)',
-				'form-md': 'var(--shadow-md)',
-				'form-lg': 'var(--shadow-lg)'
 			}
 		}
 	},

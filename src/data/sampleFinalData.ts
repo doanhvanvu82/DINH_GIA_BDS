@@ -13,7 +13,7 @@ export const sampleFinalDataTD = {
 export const sampleFinalDataAI = {
   guide_price: "5,720,000,000",
   avg_guide_price: "5,710,000,000",
-  diff_avg_guide: "+0.18%",
+  diff_avg_guide: "0.18%",
   total_adjust: "-390,000,000",
   adjust_count: "3",
   adjust_range: "6.8%",
