@@ -40,7 +40,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
   const [detailsData, setDetailsData] = useState<LandData | null>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const mapRef = useRef<any>(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 21.028511, lng: 105.804817 });
+  const [mapCenter, setMapCenter] = useState({ lat: 20.980880633747, lng: 105.75492642413 });
   const [shouldMoveMap, setShouldMoveMap] = useState(false);
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [searchPanelOpen, setSearchPanelOpen] = useState(false);
@@ -172,7 +172,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
   // Di chuyển bản đồ khi chọn gợi ý
   useEffect(() => {
     if (shouldMoveMap && mapRef.current && mapRef.current.setView) {
-      mapRef.current.setView([mapCenter.lat, mapCenter.lng], 16, {
+      mapRef.current.setView([mapCenter.lat, mapCenter.lng], 18, {
         animate: true,
         duration: 1,
       });
@@ -457,7 +457,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
         {planning && (         
           <TileLayer
             url={getPlanningLayerUrl(mapCenter.lat, mapCenter.lng)}
-            maxNativeZoom={19}
+            maxNativeZoom={18}
             maxZoom={20}
             opacity={1.0}
           />
@@ -484,15 +484,6 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
               />
             );
           })}
-        {/* Marker khi click vào bản đồ */}
-        {markerPosition && (
-          <Marker position={[markerPosition.lat, markerPosition.lng]} icon={L.divIcon({
-            className: 'custom-mappin-marker',
-            html: `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"36\" height=\"36\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" viewBox=\"0 0 24 24\"><path d=\"M12 21c-4.8-4.8-7.2-8-7.2-11.2A7.2 7.2 0 0 1 12 2.6a7.2 7.2 0 0 1 7.2 7.2c0 3.2-2.4 6.4-7.2 11.2Z\"/><circle cx=\"12\" cy=\"9.8\" r=\"2.2\"/></svg>`,
-            iconSize: [36, 36],
-            iconAnchor: [18, 36],
-          })} />
-        )}
       </MapContainer>
 
       <ScrollToTopButton />
