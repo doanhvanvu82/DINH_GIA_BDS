@@ -342,7 +342,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
       </button>
       {/* Panel tìm kiếm */}
       <div
-        className={`fixed top-0 right-0 h-full w-[360px] bg-white shadow-2xl z-[1099] border-l border-gray-200 transition-transform duration-300 ${searchPanelOpen ? 'translate-x-0' : 'translate-x-full'} search-container flex flex-col`}
+        className={`fixed top-12 right-0 h-[calc(100%-3rem)] w-[360px] bg-white shadow-2xl z-[1099] border-l border-gray-200 transition-transform duration-300 ${searchPanelOpen ? 'translate-x-0' : 'translate-x-full'} search-container flex flex-col`}
         style={{ willChange: 'transform', maxWidth: '100vw' }}
       >
         {/* Header panel */}
@@ -416,7 +416,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
         </div>
       </div>
       {/* Nút vệ tinh và quy hoạch */}
-      <div className={`absolute top-10 flex flex-col gap-4 z-[1002] transition-all duration-300 ${searchPanelOpen ? 'right-[380px]' : 'right-6'}`}>
+      <div className={`absolute top-16 flex flex-col gap-4 z-[1002] transition-all duration-300 ${searchPanelOpen ? 'right-[380px]' : 'right-6'}`}>
         <button
           onClick={() => setSatellite(s => !s)}
           className={`w-12 h-12 flex items-center justify-center rounded-full shadow-lg bg-white border-0 transition hover:bg-blue-50 ${satellite ? 'ring-2 ring-blue-400' : ''}`}
@@ -436,7 +436,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
       {/* Full-screen map */}
       <MapContainer 
         center={[mapCenter.lat, mapCenter.lng]} 
-        zoom={satellite ? 18 : 15} 
+        zoom={satellite ? 18 : 17} 
         maxZoom={20} 
         style={{ height: '100vh', width: '100vw', borderRadius: 0 }}
         ref={mapRef}

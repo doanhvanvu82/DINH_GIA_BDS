@@ -45,7 +45,7 @@ export interface Amenity {
       { lat: 20.980335513826, lng: 105.75529635375 },
       { lat: 20.980320789122, lng: 105.75531714916 },
     ],
-    fullAddress: "Thửa 25 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",   
+    fullAddress: "Thửa 25 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn002",
@@ -59,7 +59,7 @@ export interface Amenity {
       { lat: 20.980689717288, lng: 105.75365512019 },
       { lat: 20.98055188515, lng: 105.75377704898 }
     ],
-    fullAddress: "Thửa 3 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",    
+    fullAddress: "Thửa 3 Tờ 82, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn003",
@@ -75,7 +75,7 @@ export interface Amenity {
       { lat: 20.980173095452, lng: 105.75552394668 },
       { lat: 20.980171914014, lng: 105.75552557567 }
     ],
-    fullAddress: "Thửa 33 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",  
+    fullAddress: "Thửa 33 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn004",
@@ -89,7 +89,7 @@ export interface Amenity {
       { lat: 20.980222718382, lng: 105.75545495208 },
       { lat: 20.980173095452, lng: 105.75552394668 }
     ],
-    fullAddress: "Thửa 34 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội", 
+    fullAddress: "Thửa 34 Tờ 83, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn005",
@@ -104,7 +104,7 @@ export interface Amenity {
       { lat: 20.98058353, lng: 105.75352168 },
       { lat: 20.98044653, lng: 105.75364329 }  
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",    
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn006",
@@ -118,7 +118,7 @@ export interface Amenity {
       { lat: 20.98063474, lng: 105.75358807 },
       { lat: 20.9804979, lng: 105.75371078 } 
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",   
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn007",
@@ -132,7 +132,7 @@ export interface Amenity {
       { lat: 20.98073992, lng: 105.75372132 },
       { lat: 20.98060336, lng: 105.75384181 } 
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",  
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn008",
@@ -146,7 +146,7 @@ export interface Amenity {
       { lat: 20.9807922,  lng: 105.75378755 },
       { lat: 20.98065355, lng: 105.75391025 }
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",   
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn009",
@@ -161,7 +161,7 @@ export interface Amenity {
       { lat: 20.98084402, lng: 105.75385466 },
       { lat: 20.98070546, lng: 105.75397687 }
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội", 
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn010",
@@ -175,7 +175,7 @@ export interface Amenity {
       { lat: 20.98089548, lng: 105.75392108 },
       { lat: 20.98075755, lng: 105.75404359 }
     ],
-    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội", 
+    fullAddress: "Thửa 0 Tờ 0, Phường Dương Nội, Hà Đông, Hà Nội",
   },
   {
     id: "hn011",

@@ -450,7 +450,7 @@ export default function PropertyForm() {
   };
 
   return (
-    <div className="min-h-screen bg-form-background p-4 md:p-8 overflow-x-auto">
+    <div className="min-h-screen bg-form-background p-4 md:p-12 overflow-x-auto">
       {/* Loading Overlay */}
       {isLoading && <LoadingOverlay loadingStep={loadingStep} />}
       {isSaving && <LoadingOverlay loadingStep="Đang tiến hành lưu báo cáo..." />}
