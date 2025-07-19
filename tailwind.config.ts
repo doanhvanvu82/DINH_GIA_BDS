@@ -52,6 +52,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Custom form colors
+				'table-header': 'hsl(var(--table-header))',
+				'table-accent': 'hsl(var(--table-accent))',
+				'form-background': 'hsl(var(--form-background))',
+				'group-header': 'hsl(var(--group-header))',
+				'input-readonly': 'hsl(var(--input-readonly))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -89,6 +95,11 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
+			},
+			boxShadow: {
+				'form': 'var(--shadow-sm)',
+				'form-md': 'var(--shadow-md)',
+				'form-lg': 'var(--shadow-lg)'
 			}
 		}
 	},

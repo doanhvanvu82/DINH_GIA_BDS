@@ -1,5 +1,9 @@
-import { useState, Fragment } from "react"; // Thêm Fragment
+import { useState, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import sampleCompareData from "../data/sampleCompareData";
+import AI_DATA from "../data/sampleAIData";
+import LoadingOverlay from "../components/LoadingOverlay";
+import { sampleFinalDataTD, sampleFinalDataAI } from "../data/sampleFinalData";
 
 const COLUMN_COUNT = 5; // TS thẩm định + Định giá AI + 3 TS so sánh
 const COLUMN_LABELS = [
@@ -121,7 +125,7 @@ const ADJUST_FIELDS = [
     ]
   },
   {
-    groupLabel: "Yếu tố tâm linh",
+    groupLabel: "Yếu tố tâm linh: Gần khu nghĩa trang, chùa, nhà thờ...(bán kính 50m)",
     fields: [
       { label: "Thông số", key: "spiritual_value" },
       { label: "Tỷ lệ điều chỉnh(%)", key: "spiritual_ratio" },
@@ -151,7 +155,34 @@ const FINAL_FIELDS = [
   { label: "Ghi chú", key: "note" },
 ];
 
-function useTableState(fields, autofill) {
+// Các trường gen bằng AI trong VALUE_FIELDS
+const AI_VALUE_KEYS = [
+  "offer_price",
+  "confidence",
+  "deal_price",
+  "deal_time",
+  "total_construction",
+  "construction1",
+  "unit_price",
+  "quality",
+  "completion"
+];
+
+// Các trường gen bằng AI trong ADJUST_FIELDS
+const AI_ADJUST_KEYS = [
+  "legal_status_ratio", "legal_status_adjust", "legal_status_price",
+  "usage_purpose_ratio", "usage_purpose_adjust", "usage_purpose_price",
+  "area_m2_ratio", "area_m2_adjust", "area_m2_price",
+  "frontage_m_ratio", "frontage_m_adjust", "frontage_m_price",
+  "shape_ratio", "shape_adjust", "shape_price",
+  "frontage_ratio", "frontage_adjust", "frontage_price",
+  "alley_width_ratio", "alley_width_adjust", "alley_width_price",
+  "spiritual_ratio", "spiritual_adjust", "spiritual_price",
+  "other_disadvantage_ratio", "other_disadvantage_adjust", "other_disadvantage_price"
+];
+
+// Sửa useTableState cho bảng giá trị tài sản
+function useTableState(fields, autofill, columnDefaults = [], aiKeys = []) {
   const [data, setData] = useState(() => {
     const initialState = {};
     const extractKeys = (fieldList) => {
@@ -164,8 +195,13 @@ function useTableState(fields, autofill) {
       });
     };
     extractKeys(fields);
-    // Nếu có autofill, điền vào cột đầu tiên (TS Thẩm định)
-    const arr = Array(COLUMN_COUNT).fill(0).map(() => ({ ...initialState }));
+
+    const arr = Array(COLUMN_COUNT).fill(0).map((_, i) => ({
+      ...initialState,
+      ...(columnDefaults[i] || {})
+    }));
+
+    // Autofill cho cột thẩm định
     if (autofill) {
       if (autofill.address) arr[0]["address"] = autofill.address;
       if (autofill.ward) arr[0]["ward"] = autofill.ward;
@@ -175,128 +211,301 @@ function useTableState(fields, autofill) {
       if (autofill.wgs84) arr[0]["wgs84"] = autofill.wgs84;
       if (autofill.area) arr[0]["area"] = autofill.area;
     }
+
+    // Copy dữ liệu từ cột thẩm định sang cột AI nếu có sẵn
+    Object.keys(arr[0]).forEach(key => {
+      // Nếu là bảng giá trị tài sản và key là AI thì không copy
+      if (arr[0][key] && !(aiKeys && aiKeys.includes(key))) arr[1][key] = arr[0][key];
+    });
+
     return arr;
   });
 
   const setField = (col, key, value) => {
-    setData(prev => prev.map((row, idx) => idx === col ? { ...row, [key]: value } : row));
+    setData(prev => prev.map((row, idx) => {
+      // Nếu đang nhập ở cột thẩm định (col === 0), cập nhật luôn cột AI (idx === 1)
+      // Nếu là bảng giá trị tài sản và key là AI thì không copy
+      if (idx === col) return { ...row, [key]: value };
+      if (col === 0 && idx === 1 && !(aiKeys && aiKeys.includes(key))) return { ...row, [key]: value };
+      return row;
+    }));
   };
 
   return [data, setField];
 }
 
+
 export default function PropertyForm() {
   const location = useLocation();
   const autofill = location.state?.autofill;
   const navigate = useNavigate();
-  const [general, setGeneral] = useTableState(GENERAL_FIELDS, autofill);
-  const [value, setValue] = useTableState(VALUE_FIELDS, undefined);
-  const [adjust, setAdjust] = useTableState(ADJUST_FIELDS, undefined);
-  const [final, setFinal] = useTableState(FINAL_FIELDS, undefined);
 
-  // Helper render bảng đã được cập nhật
-  const renderTable = (fields, data, setField, title) => (
-    <div className="overflow-x-auto w-full">
-      <table className="min-w-[900px] w-full table-fixed border mb-8 bg-white shadow rounded-xl">
-        <colgroup>
-          <col style={{ width: '100px' }} />
-          <col style={{ width: '140px' }} />
-          {Array(COLUMN_COUNT).fill(0).map((_, idx) => (
-            <col key={idx} style={{ width: `${Math.max(120, Math.floor((1000 - 400) / COLUMN_COUNT))}px` }} />
-          ))}
-        </colgroup>
-        <thead>
-          <tr className="bg-blue-100">
-            {/* Cập nhật: Tiêu đề chính chiếm 2 cột */}
-            <th colSpan={2} className="p-2 border text-left">{title}</th>
-            {COLUMN_LABELS.map((label, idx) => (
-              <th key={idx} className="p-2 border text-center font-semibold">{label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((fieldOrGroup) => {
-            // --- XỬ LÝ NHÓM ---
-            if (fieldOrGroup.groupLabel) {
-              const group = fieldOrGroup;
-              return (
-                <Fragment key={group.groupLabel}>
-                  {group.fields.map((subField, index) => (
-                    <tr key={subField.key}>
-                      {/* Chỉ render ô label nhóm ở hàng đầu tiên */}
-                      {index === 0 && (
-                        <td
-                          className="p-2 border bg-blue-50 font-semibold text-sm text-center align-middle"
-                          rowSpan={group.fields.length}
-                          style={{ minWidth: 120 }}
-                        >
-                          {group.groupLabel}
-                        </td>
-                      )}
-                      {/* Label của từng trường con */}
-                      <td className="p-2 border bg-blue-50 font-medium text-sm" style={{ minWidth: 120 }}>{subField.label}</td>
-                      {/* Các ô input */}
-                      {data.map((col, colIdx) => (
-                        <td key={colIdx} className="p-1 border">
-                          <input
-                            className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
-                            value={col[subField.key]}
-                            onChange={e => setField(colIdx, subField.key, e.target.value)}
-                            placeholder={subField.label}
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </Fragment>
-              );
-            }
+  const [general, setGeneralField] = useTableState(GENERAL_FIELDS, autofill, sampleCompareData);
+  const [value, setValueField] = useTableState(VALUE_FIELDS, undefined, sampleCompareData, AI_VALUE_KEYS);
+  const [adjust, setAdjustField] = useTableState(ADJUST_FIELDS, undefined, sampleCompareData, AI_ADJUST_KEYS);
+  const [final, setFinalField] = useTableState(FINAL_FIELDS, undefined, sampleCompareData);
 
-            // --- XỬ LÝ TRƯỜNG ĐƠN LẺ ---
-            const field = fieldOrGroup;
-            return (
-              <tr key={field.key}>
-                {/* Ô label chính chiếm 2 cột */}
-                <td colSpan={2} className="p-2 border bg-blue-50 font-medium text-sm" style={{ minWidth: 220 }}>{field.label}</td>
-                {data.map((col, colIdx) => (
-                  <td key={colIdx} className="p-1 border">
-                    <input
-                      className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
-                      value={col[field.key]}
-                      onChange={e => setField(colIdx, field.key, e.target.value)}
-                      placeholder={field.label}
-                    />
-                  </td>
+  // Destructure để lấy setter functions từ useTableState  
+  const setGeneralFieldFn = Array.isArray(setGeneralField) ? setGeneralField[1] : setGeneralField;
+  const setValueFieldFn = Array.isArray(setValueField) ? setValueField[1] : setValueField; 
+  const setAdjustFieldFn = Array.isArray(setAdjustField) ? setAdjustField[1] : setAdjustField;
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentFillIndex, setCurrentFillIndex] = useState(-1);
+  const [loadingStep, setLoadingStep] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  const renderTable = (fields, data, setField, title) => {
+    const isFinalTable = title === "Kết quả & ghi chú";
+    return (
+      <div className="overflow-x-auto w-full mb-8">
+        <div className="bg-card rounded-lg shadow-form-md border border-border overflow-hidden">
+          <table className="min-w-[900px] w-full table-fixed">
+            <colgroup>
+              <col style={{ width: '100px' }} />
+              <col style={{ width: '140px' }} />
+              {Array(COLUMN_COUNT).fill(0).map((_, idx) => (
+                <col key={idx} style={{ width: `${Math.max(120, Math.floor((1000 - 400) / COLUMN_COUNT))}px` }} />
+              ))}
+            </colgroup>
+            <thead>
+              <tr className="bg-table-header border-b border-border">
+                <th colSpan={2} className="p-4 text-left font-semibold text-foreground text-sm">
+                  {title}
+                </th>
+                {COLUMN_LABELS.map((label, idx) => (
+                  <th key={idx} className="p-4 text-center font-semibold text-foreground text-sm border-l border-border">
+                    {label}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+            </thead>
+            <tbody>
+              {fields.map((fieldOrGroup) => {
+                if (fieldOrGroup.groupLabel) {
+                  const group = fieldOrGroup;
+                  return (
+                    <Fragment key={group.groupLabel}>
+                      {group.fields.map((subField, index) => (
+                        <tr key={subField.key} className="border-b border-border">
+                          {index === 0 && (
+                            <td className="p-3 bg-group-header font-medium text-sm text-foreground text-center align-middle border-r border-border" rowSpan={group.fields.length}>
+                              {group.groupLabel}
+                            </td>
+                          )}
+                          <td className="p-3 bg-table-accent font-medium text-sm text-foreground border-r border-border">
+                            {subField.label}
+                          </td>
+                          {data.map((col, colIdx) => (
+                            <td
+                              key={colIdx}
+                              className={
+                                isFinalTable
+                                  ? "p-2 border-r border-border bg-gray-50"
+                                  : `p-2 border-r border-border bg-white ${colIdx === 1 || colIdx === 2 || colIdx === 3 ? "bg-input-readonly" : ""}`
+                              }
+                            >
+                              <input
+                                className={
+                                  isFinalTable
+                                    ? "w-full px-2 py-1 text-sm rounded-md border-none bg-gray-50 cursor-not-allowed"
+                                    : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
+                                        colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
+                                      } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""}`
+                                }
+                                value={col[subField.key] || ""}
+                                onChange={isFinalTable ? undefined : (e => setField(colIdx, subField.key, e.target.value))}
+                                placeholder={subField.label}
+                                readOnly={isFinalTable ? true : (colIdx === 1 || colIdx === 2 || colIdx === 3)}
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </Fragment>
+                  );
+                }
+
+                return (
+                  <tr key={fieldOrGroup.key} className="border-b border-border">
+                    <td colSpan={2} className="p-3 bg-table-accent font-medium text-sm text-foreground border-r border-border">
+                      {fieldOrGroup.label}
+                    </td>
+                    {data.map((col, colIdx) => (
+                      <td
+                        key={colIdx}
+                        className={
+                          isFinalTable
+                            ? "p-2 border-r border-border bg-input-readonly"
+                            : "p-2 border-r border-border bg-white"
+                        }
+                      >
+                        <input
+                          className={
+                            isFinalTable
+                              ? "w-full px-2 py-1 text-sm rounded-md border-none bg-input-readonly cursor-not-allowed  text-foreground"
+                              : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-foreground font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
+                                  colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
+                                } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""}`
+                          }
+                          value={col[fieldOrGroup.key] || ""}
+                          onChange={isFinalTable ? undefined : (e => setField(colIdx, fieldOrGroup.key, e.target.value))}
+                          placeholder={fieldOrGroup.label}
+                          readOnly={isFinalTable ? true : (colIdx === 1 || colIdx === 2 || colIdx === 3)}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  // Hàm AI định giá với loading effect
+  async function handleAIValuation() {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    setCurrentFillIndex(-1);
+    
+    // Các bước loading
+    const loadingSteps = [
+      "Đang tiến hành định giá...",
+      "Đang khởi tạo mô hình AI...",
+      "Đang phân tích thông tin tài sản...",
+      "Đang thu thập dữ liệu thị trường...",
+      "Đang so sánh với các tài sản tương tự...", 
+      "Đang tính toán các hệ số điều chỉnh...",
+      "Đang xử lý dữ liệu địa lý...",
+      "Đang áp dụng thuật toán định giá AI...",
+      "Đang tính toán các thông số kỹ thuật...",
+      "Đang hoàn thiện kết quả..."
+    ];
+
+    // Giai đoạn 1: Loading với các bước
+    for (let i = 0; i < loadingSteps.length; i++) {
+      setLoadingStep(loadingSteps[i]);
+      await new Promise(resolve => setTimeout(resolve, 3000)); // tăng từ 800 lên 1400ms
+    }
+
+    // Giai đoạn 2: Fill dữ liệu từ từ
+    setLoadingStep("Đang điền dữ liệu vào báo cáo...");
+    
+    // Tạo danh sách tất cả các trường cần fill (trừ bảng cuối)
+    const allFields = [
+      ...Object.keys(AI_DATA.general).map(key => ({ table: 'general', key, value: AI_DATA.general[key] })),
+      ...Object.keys(AI_DATA.value).map(key => ({ table: 'value', key, value: AI_DATA.value[key] })),
+      ...Object.keys(AI_DATA.adjust).map(key => ({ table: 'adjust', key, value: AI_DATA.adjust[key] }))
+    ];
+
+    // Fill từng trường một cách tuần tự
+    for (let i = 0; i < allFields.length; i++) {
+      const field = allFields[i];
+      setCurrentFillIndex(i);
+      
+      // Delay để tạo hiệu ứng
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Fill dữ liệu vào cột AI (index 1)
+      if (field.table === 'general') {
+        setGeneralFieldFn(1, field.key, field.value);
+      } else if (field.table === 'value') {
+        setValueFieldFn(1, field.key, field.value);
+      } else if (field.table === 'adjust') {
+        setAdjustFieldFn(1, field.key, field.value);
+      }
+    }
+    
+    // Fill dữ liệu mẫu vào bảng cuối (cột 0 và 1)
+    Object.entries(sampleFinalDataTD).forEach(([key, value]) => {
+      setFinalField(0, key, value);
+    });
+    Object.entries(sampleFinalDataAI).forEach(([key, value]) => {
+      setFinalField(1, key, value);
+    });
+
+    setCurrentFillIndex(-1);
+    setLoadingStep("");
+    setIsLoading(false);
+  }
+
+  const handleSaveReport = () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaving(false);
+      navigate('/report-summary');
+    }, 3000);
+  };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 p-2 md:p-6 overflow-x-auto">
+    <div className="min-h-screen bg-form-background p-4 md:p-8 overflow-x-auto">
+      {/* Loading Overlay */}
+      {isLoading && <LoadingOverlay loadingStep={loadingStep} />}
+      {isSaving && <LoadingOverlay loadingStep="Đang tiến hành lưu báo cáo..." />}
+
       <div className="max-w-[1800px] mx-auto">
-        <h1 className="text-2xl font-bold text-blue-700 mb-6">BẢNG SO SÁNH TÀI SẢN ĐỊNH GIÁ</h1>
-        <h2 className="font-bold">I. ĐIỀU CHỈNH ĐỊNH LƯỢNG</h2>
-        {renderTable(GENERAL_FIELDS, general, setGeneral, "Thông tin chung")}
-        {renderTable(VALUE_FIELDS, value, setValue, "Giá trị tài sản")}
-        <h2 className="font-bold">II. BẢNG ĐIỀU CHỈNH VÀ THÔNG SỐ KỸ THUẬT</h2>
-        {renderTable(ADJUST_FIELDS, adjust, setAdjust, "CÁC TIÊU CHÍ")}
-        {renderTable(FINAL_FIELDS, final, setFinal, "Kết quả & ghi chú")}
-        {/* Nút Định giá và Lưu báo cáo */}
-        <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-8 mb-12">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-8 py-3 text-lg shadow transition">Định giá</button>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            BẢNG SO SÁNH TÀI SẢN ĐỊNH GIÁ
+          </h1>
+          <div className="h-1 w-16 bg-primary rounded-full"></div>
+        </div>
+        
+        <div className="space-y-8">
+          <section>
+            <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center">
+              <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">I</span>
+              ĐIỀU CHỈNH ĐỊNH LƯỢNG
+            </h2>
+            {renderTable(GENERAL_FIELDS, general, setGeneralField, "Thông tin chung")}
+            {renderTable(VALUE_FIELDS, value, setValueField, "Giá trị tài sản")}
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center">
+              <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">II</span>
+              BẢNG ĐIỀU CHỈNH VÀ THÔNG SỐ KỸ THUẬT
+            </h2>
+            {renderTable(ADJUST_FIELDS, adjust, setAdjustField, "CÁC TIÊU CHÍ")}
+            {renderTable(FINAL_FIELDS, final, () => {}, "Kết quả & ghi chú")}
+          </section>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12 mb-8">
           <button
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl px-8 py-3 text-lg shadow transition"
-            onClick={() => navigate('/report-summary')}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg px-8 py-3 text-base shadow-form transition-all duration-200 hover:shadow-form-md hover:-translate-y-0.5 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleAIValuation}
+            disabled={isLoading}
           >
-            Lưu báo cáo
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
+                Đang định giá...
+              </div>
+            ) : (
+              "Định giá"
+            )}
+          </button>
+          <button
+            className="bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold rounded-lg px-8 py-3 text-base shadow-form transition-all duration-200 hover:shadow-form-md hover:-translate-y-0.5 min-w-[140px] border border-border"
+            onClick={handleSaveReport}
+            disabled={isSaving}
+          >
+            {isSaving ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin"></div>
+                Đang lưu báo cáo...
+              </div>
+            ) : (
+              "Lưu báo cáo"
+            )}
           </button>
         </div>
       </div>
-      </div>
+    </div>
   );
-} 
+}

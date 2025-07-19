@@ -147,7 +147,6 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
   // Hàm thực hiện tìm kiếm khi ấn nút
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Tìm suggestion đầu tiên khớp với searchAddress
     const sug = suggestions.find(sug =>
       sug.properties.formatted.replace(/,? ?\d{5},? ?Việt Nam$/, '').replace(/,? ?Việt Nam$/, '') === searchAddress
     );
@@ -155,6 +154,18 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
       setMapCenter({ lat: sug.properties.lat, lng: sug.properties.lon });
       setShouldMoveMap(true);
       setMarkerPosition({ lat: sug.properties.lat, lng: sug.properties.lon });
+
+      // Nếu là dữ liệu mock thì lấy thông tin chi tiết để hiển thị panel xác nhận
+      if (sug.properties.place_id && sug.properties.place_id.startsWith('mock-')) {
+        const plotId = sug.properties.place_id.replace('mock-', '');
+        const plotData = mockLandDataList.find(plot => plot.id === plotId);
+        if (plotData) {
+          setDetailsData(plotData);
+          setShowDetails(true);
+          setSelectedPlot(plotId);
+          if(!searchPanelOpen) setSearchPanelOpen(true);
+        }
+      }
     }
   };
 
@@ -446,7 +457,7 @@ const MapSelector = ({ onPlotSelect = () => {}, onDrawCustom = () => {}, onCance
         {planning && (         
           <TileLayer
             url={getPlanningLayerUrl(mapCenter.lat, mapCenter.lng)}
-            maxNativeZoom={18}
+            maxNativeZoom={19}
             maxZoom={20}
             opacity={1.0}
           />
