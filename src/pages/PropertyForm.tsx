@@ -14,6 +14,12 @@ const COLUMN_LABELS = [
   "TS SO SÁNH 3"
 ];
 
+function isNumberValue(val: string) {
+  // Kiểm tra giá trị là số (có thể có dấu phẩy, chấm, hoặc chỉ số)
+  return /^[\d,.]+$/.test(val.trim());
+}
+
+
 // Định nghĩa các trường cho từng nhóm (đã cập nhật với group)
 const GENERAL_FIELDS = [
   { label: "Địa chỉ", key: "address" },
@@ -346,7 +352,9 @@ export default function PropertyForm() {
                               ? "w-full px-2 py-1 text-sm rounded-md border-none bg-input-readonly cursor-not-allowed  text-foreground"
                               : `w-full px-2 py-1 text-sm rounded-md border-none bg-white text-foreground font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 transition-all duration-300 ${
                                   colIdx === 1 || colIdx === 2 || colIdx === 3 ? "cursor-not-allowed " : ""
-                                } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""}`
+                                } ${colIdx === 1 && isLoading && currentFillIndex >= 0 ? "animate-pulse bg-primary/10" : ""} ${
+                                isNumberValue(col[fieldOrGroup.key] || "") ? "text-right" : "text-left"
+                              }`
                           }
                           value={col[fieldOrGroup.key] || ""}
                           onChange={isFinalTable ? undefined : (e => setField(colIdx, fieldOrGroup.key, e.target.value))}
