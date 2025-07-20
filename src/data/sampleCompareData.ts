@@ -11,12 +11,18 @@ const sampleCompareData = [
     agri: "18",
     other: "12",
     other_note: "Đất bán hàng",
-    res_ratio: "66.7",
+    res_ratio: "66.7%",
     desc: "Nhà 3 tầng, hướng Đông Nam, mặt tiền 5m",
     floor_area: "240",
     construction_note: "Nhà xây năm 2018, còn mới",
     land_right: "9,000,000,000",
     legal_cost: "50,000,000",
+    offer_price: "7100000000",         // Giá chào bán/chào mua(đồng)
+    total_construction: "2100000000",  // Tổng giá trị CTXD
+    construction1: "1800000000",       // Giá trị CTXD1
+    unit_price: "18500000",            // Đơn giá xây dựng
+    quality: "85",                     // Chất lượng còn lại(%)
+    completion: "95",  
   },
   {   
      street: "An Hòa",
@@ -30,7 +36,7 @@ const sampleCompareData = [
     agri: "20",
     other: "20",
     other_note: "Đất bán hàng",
-    res_ratio: "66.7", 
+    res_ratio: "66.7%", 
     desc: "Nhà 3 tầng, hướng Đông Nam, mặt tiền 5m",
     floor_area: "240",
     construction_note: "Nhà xây năm 2018, còn mới",
