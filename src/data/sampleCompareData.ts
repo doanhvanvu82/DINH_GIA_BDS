@@ -1,6 +1,6 @@
 const sampleCompareData = [
   {
-        street: "An Hòa",
+        street: "Lê Quang Đạo",
     distance: "250",
     source: "Batdongsan.com.vn",
     link: "https://batdongsan.com.vn/44-an-hoa",
@@ -25,7 +25,7 @@ const sampleCompareData = [
     completion: "95",  
   },
   {   
-     street: "An Hòa",
+     street: "Lê Quang Đạo",
     distance: "250",
     source: "Batdongsan.com.vn",
     link: "https://batdongsan.com.vn/44-an-hoa",
