@@ -130,3 +130,31 @@
 .leaflet-top.leaflet-left {
   top: 60px !important;
 }
+
+.bg-group-header {
+    background: #f3f4f6 !important; /* xám nhẹ */
+  color: #222 !important;         /* chữ đen */
+}
+
+.bg-table-accent {
+  background: #f3f4f6 !important; /* xám nhẹ */
+  color: #222 !important;         /* chữ đen */
+}
+
+.bg-table-header {
+  background: #2563eb !important; /* xanh dương đậm */
+  color: #fff !important;         /* chữ trắng */
+}
+
+.bg-table-special {
+  background: #fff !important;   /* nền trắng */
+  color: #222 !important;        /* chữ đen */
+  font-weight: 400;
+  
+}
+
+.bg-section-title {
+  background: #2563eb !important; /* xanh dương đậm */
+  color: #fff !important;         /* chữ trắng */
+  font-weight: 600;
+}

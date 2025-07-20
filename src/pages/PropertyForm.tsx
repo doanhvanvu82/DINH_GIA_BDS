@@ -272,19 +272,22 @@ export default function PropertyForm() {
         <div className="bg-card rounded-lg shadow-form-md border border-border overflow-hidden">
           <table className="min-w-[900px] w-full table-fixed">
             <colgroup>
-              <col style={{ width: '100px' }} />
-              <col style={{ width: '140px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '120px' }} />
               {Array(COLUMN_COUNT).fill(0).map((_, idx) => (
                 <col key={idx} style={{ width: `${Math.max(120, Math.floor((1000 - 400) / COLUMN_COUNT))}px` }} />
               ))}
             </colgroup>
             <thead>
               <tr className="bg-table-header border-b border-border">
-                <th colSpan={2} className="p-4 text-left font-semibold text-foreground text-sm">
+                <th colSpan={2} className="p-4 bg-section-title text-left font-semibold text-sm border-r border-border">
                   {title}
                 </th>
                 {COLUMN_LABELS.map((label, idx) => (
-                  <th key={idx} className="p-4 text-center font-semibold text-foreground text-sm border-l border-border">
+                  <th
+                    key={idx}
+                    className="p-4 bg-table-header text-center font-semibold text-sm border-l border-border"
+                  >
                     {label}
                   </th>
                 ))}
@@ -303,9 +306,24 @@ export default function PropertyForm() {
                               {group.groupLabel}
                             </td>
                           )}
-                          <td className="p-3 bg-table-accent font-medium text-sm text-foreground border-r border-border">
-                            {subField.label}
-                          </td>
+                          <td
+  className={`p-3 ${
+    [
+      "Đất ở",
+      "Giải thích",
+      "Đất nông nghiệp",
+      "Các loại đất khác",
+      "Thông số",
+      "Tỷ lệ điều chỉnh(%)",
+      "Mức điều chỉnh",
+      "Giá sau điều chỉnh"
+    ].includes(subField.label)
+      ? "bg-table-special"
+      : "bg-table-accent"
+  } font-medium text-sm text-foreground border-r border-border`}
+>
+  {subField.label}
+</td>
                           {data.map((col, colIdx) => {
                             const isValueField = subField.key.endsWith('_value');
                             const isRatioField = subField.key.endsWith('_ratio');
@@ -510,8 +528,8 @@ export default function PropertyForm() {
               <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">I</span>
               ĐIỀU CHỈNH ĐỊNH LƯỢNG
             </h2>
-            {renderTable(GENERAL_FIELDS, general, setGeneralField, "Thông tin chung")}
-            {renderTable(VALUE_FIELDS, value, setValueField, "Giá trị tài sản")}
+            {renderTable(GENERAL_FIELDS, general, setGeneralField, "THÔNG TIN CHUNG")}
+            {renderTable(VALUE_FIELDS, value, setValueField, "GIÁ TRỊ TÀI SẢN")}
           </section>
 
           <section>
@@ -527,7 +545,7 @@ export default function PropertyForm() {
               <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">III</span>
               KẾT QUẢ & GHI CHÚ
             </h2>
-            {renderTable(FINAL_FIELDS, final, () => {}, "Kết quả & ghi chú")}
+            {renderTable(FINAL_FIELDS, final, () => {}, "KẾT QUẢ & GHI CHÚ")}
           </section>
         </div>
 
