@@ -616,7 +616,7 @@ export default function PropertyForm() {
     // Giai đoạn 1: Loading với các bước
     for (let i = 0; i < loadingSteps.length; i++) {
       setLoadingStep(loadingSteps[i]);
-      await new Promise((resolve) => setTimeout(resolve, 1900)); // tăng từ 800 lên 1400ms
+      await new Promise((resolve) => setTimeout(resolve, 1800)); // tăng từ 800 lên 1400ms
     }
 
     // Giai đoạn 2: Fill dữ liệu từ từ
@@ -646,7 +646,7 @@ export default function PropertyForm() {
       const field = allFields[i];
       setCurrentFillIndex(i);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 90));
 
       // Chỉ fill bảng value và adjust, KHÔNG fill bảng general
       if (field.table === "value") {

@@ -448,123 +448,134 @@ const MapSelector = ({
 
       {/* Panel tìm kiếm */}
       <div
-  className={`fixed top-0 right-0 h-screen w-[400px] bg-white border-l border-gray-200 z-[1099] transition-transform duration-300 ${
-    searchPanelOpen ? "translate-x-0" : "translate-x-full"
-  } search-container flex flex-col`}
-  style={{ willChange: "transform", maxWidth: "100vw" }}
->
-  {/* Header panel */}
-  <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-200 bg-white">
-    <div className="w-11 h-11 bg-gray-100 rounded-lg flex items-center justify-center">
-      <Search className="w-5 h-5 text-gray-700" />
-    </div>
-    <div className="flex-1">
-      <h2 className="text-lg font-semibold text-gray-800">Tìm kiếm địa chỉ</h2>
-      <p className="text-sm text-gray-500 mt-0.5">Nhập địa chỉ để tra cứu.</p>
-    </div>
-  </div>
+        className={`fixed top-0 right-0 h-screen w-[400px] bg-white border-l border-gray-200 z-[1099] transition-transform duration-300 ${
+          searchPanelOpen ? "translate-x-0" : "translate-x-full"
+        } search-container flex flex-col`}
+        style={{ willChange: "transform", maxWidth: "100vw" }}
+      >
+        {/* Header panel */}
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-200 bg-white">
+          <div className="w-11 h-11 bg-gray-100 bg-primary rounded-lg flex items-center justify-center">
+            <Search className="w-5 h-5 text-gray-100 " />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg font-semibold text-gray-800">
+              Tìm kiếm địa chỉ
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Nhập địa chỉ để tra cứu.
+            </p>
+          </div>
+        </div>
 
-  {/* Nội dung panel */}
-  <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5">
-    <form onSubmit={handleSearchSubmit} className="space-y-3">
-      <label htmlFor="search-input" className="text-sm font-medium text-gray-700">
-        Địa chỉ cần tìm
-      </label>
-      <div className="relative">
-        <Input
-          id="search-input"
-          type="text"
-          placeholder="VD: 44 An Hòa, Mộ Lao"
-          value={searchAddress}
-          onChange={handleSearchInputChange}
-          className="pl-10 pr-10 h-11 text-sm border rounded-md w-full"
-          autoComplete="off"
-          onFocus={() =>
-            searchAddress.length > 2 && suggestions.length > 0 && setShowSuggestions(true)
-          }
-        />
-        {/* Icon search bên trái */}
-        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-        {/* Nút tìm kiếm bên phải */}
-        <button
-          type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-0 m-0 bg-transparent border-none cursor-pointer"
-          aria-label="Tìm kiếm"
-        >
-          <Search className="w-5 h-5 text-gray-500" />
-        </button>
-        {searchLoading && (
-          <Loader2 className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-500 animate-spin w-5 h-5" />
-        )}
-        {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-12 bg-white border border-gray-200 rounded-md shadow-sm z-50 max-h-64 overflow-y-auto">
-            {suggestions.map((sug, idx) => (
-              <div
-                key={sug.properties.place_id || idx}
-                className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-sm border-b last:border-b-0"
-                onClick={() => handleSuggestionClick(sug)}
+        {/* Nội dung panel */}
+        <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5">
+          <form onSubmit={handleSearchSubmit} className="space-y-3">
+            <label
+              htmlFor="search-input"
+              className="text-sm font-medium text-gray-700"
+            >
+              Địa chỉ cần tìm
+            </label>
+            <div className="relative">
+              <Input
+                id="search-input"
+                type="text"
+                placeholder="VD: 44 An Hòa, Mộ Lao"
+                value={searchAddress}
+                onChange={handleSearchInputChange}
+                className="pl-10 pr-10 h-11 text-sm border rounded-md w-full"
+                autoComplete="off"
+                onFocus={() =>
+                  searchAddress.length > 2 &&
+                  suggestions.length > 0 &&
+                  setShowSuggestions(true)
+                }
+              />
+              {/* Icon search bên trái */}
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+              {/* Nút tìm kiếm bên phải */}
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-0 m-0 bg-transparent border-none cursor-pointer"
+                aria-label="Tìm kiếm"
               >
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-gray-600" />
-                  <span className="text-gray-800">
-                    {sug.properties.formatted
-                      .replace(/,? ?\d{5},? ?Việt Nam$/, "")
-                      .replace(/,? ?Việt Nam$/, "")}
+                <Search className="w-5 h-5 text-gray-500" />
+              </button>
+              {searchLoading && (
+                <Loader2 className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-500 animate-spin w-5 h-5" />
+              )}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-12 bg-white border border-gray-200 rounded-md shadow-sm z-50 max-h-64 overflow-y-auto">
+                  {suggestions.map((sug, idx) => (
+                    <div
+                      key={sug.properties.place_id || idx}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-sm border-b last:border-b-0"
+                      onClick={() => handleSuggestionClick(sug)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-gray-600" />
+                        <span className="text-gray-800">
+                          {sug.properties.formatted
+                            .replace(/,? ?\d{5},? ?Việt Nam$/, "")
+                            .replace(/,? ?Việt Nam$/, "")}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </form>
+
+          {/* Thông tin mảnh đất được chọn */}
+          {showDetails && detailsData && (
+            <div className="border border-gray-200 rounded-md bg-white">
+              <div className="border-b px-4 py-3">
+                <h3 className="text-sm font-semibold text-gray-700">
+                  Thông tin mảnh đất
+                </h3>
+              </div>
+              <div className="p-4 space-y-2 text-sm text-gray-700">
+                <div className="flex gap-2">
+                  <span className="font-medium">Diện tích:</span>
+                  <span className="text-green-600 font-semibold">
+                    {detailsData.area
+                      ? `${detailsData.area} m²`
+                      : "Chưa xác định"}
                   </span>
                 </div>
+                <div className="flex gap-2">
+                  <span className="font-medium">Số thửa đất:</span>
+                  <span className="text-orange-600 font-semibold">
+                    {detailsData.plotNumber || "Chưa xác định"}
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="font-medium">Địa chỉ:</span>
+                  <span className="text-gray-500">
+                    {detailsData.fullAddress || "Chưa xác định"}
+                  </span>
+                </div>
+
+                <div className="flex justify-center mt-8">
+                  <Button
+                    onClick={handleConfirmSelection}
+                    disabled={!selectedPlot}
+                    className="w-40 h-10 text-sm items-center font-semibold bg-primary text-white rounded-md disabled:opacity-50"
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Xác nhận
+                  </Button>
+                </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-    </form>
-
-    {/* Thông tin mảnh đất được chọn */}
-    {showDetails && detailsData && (
-      <div className="border border-gray-200 rounded-md bg-white">
-        <div className="border-b px-4 py-3">
-          <h3 className="text-sm font-semibold text-gray-700">Thông tin mảnh đất</h3>
-        </div>
-        <div className="p-4 space-y-2 text-sm text-gray-700">
-          <div className="flex gap-2">
-            <span className="font-medium">Diện tích:</span>
-            <span className="text-green-600 font-semibold">
-              {detailsData.area ? `${detailsData.area} m²` : "Chưa xác định"}
-            </span>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium">Số thửa đất:</span>
-            <span className="text-orange-600 font-semibold">
-              {detailsData.plotNumber || "Chưa xác định"}
-            </span>
-          </div>
-          <div className="flex gap-2">
-            <span className="font-medium">Địa chỉ:</span>
-            <span className="text-gray-500">
-              {detailsData.fullAddress || "Chưa xác định"}
-            </span>
-          </div>
-
-          <Button
-            onClick={handleConfirmSelection}
-            disabled={!selectedPlot}
-            className="w-full h-11 text-sm font-semibold mt-3 bg-gray-400 text-white rounded-md disabled:opacity-50"
-          >
-            <MapPin className="w-4 h-4 mr-2" />
-            Xác nhận chọn mảnh đất
-          </Button>
+            </div>
+          )}
         </div>
       </div>
-    )}
-  </div>
-</div>
-
 
       {/* Nút vệ tinh và quy hoạch */}
-      <div
-        className="fixed left-6 bottom-6 flex flex-col gap-4 z-[1002]"
-      >
+      <div className="fixed left-6 bottom-6 flex flex-col gap-4 z-[1002]">
         <button
           onClick={() => setSatellite((s) => !s)}
           className={`w-12 h-12 flex items-center justify-center rounded-full shadow-lg bg-card border border-border transition hover:bg-accent ${
