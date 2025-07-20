@@ -189,6 +189,27 @@ const MapSelector = ({
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
+    // Tự động thực hiện tìm kiếm khi chọn gợi ý
+    if (sug && sug.properties.lat && sug.properties.lon) {
+      setMapCenter({ lat: sug.properties.lat, lng: sug.properties.lon });
+      setShouldMoveMap(true);
+      setMarkerPosition({ lat: sug.properties.lat, lng: sug.properties.lon });
+
+      // Nếu là dữ liệu mock thì lấy thông tin chi tiết để hiển thị panel xác nhận
+      if (
+        sug.properties.place_id &&
+        sug.properties.place_id.startsWith("mock-")
+      ) {
+        const plotId = sug.properties.place_id.replace("mock-", "");
+        const plotData = mockLandDataList.find((plot) => plot.id === plotId);
+        if (plotData) {
+          setDetailsData(plotData);
+          setShowDetails(true);
+          setSelectedPlot(plotId);
+          if (!searchPanelOpen) setSearchPanelOpen(true);
+        }
+      }
+    }
   };
 
   // Hàm thực hiện tìm kiếm khi ấn nút
@@ -236,6 +257,8 @@ const MapSelector = ({
       setDetailsData(plotData);
       setShowDetails(true);
       if (!searchPanelOpen) setSearchPanelOpen(true);
+      // Hiển thị địa chỉ lên ô input tìm kiếm
+      setSearchAddress(plotData.fullAddress || "");
     } else {
       console.warn("No valid plot data or shape for plotId:", plotId, plotData);
       setShowDetails(false);
