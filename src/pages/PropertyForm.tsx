@@ -327,8 +327,8 @@ export default function PropertyForm() {
           <div className="bg-card rounded-lg shadow-form-md border border-border overflow-hidden">
             <table className="min-w-[900px] w-full table-fixed">
               <colgroup>
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
+                <col style={{ width: "110px" }} />
+                <col style={{ width: "110px" }} />
                 {Array(COLUMN_COUNT)
                   .fill(0)
                   .map((_, idx) => (
@@ -694,6 +694,7 @@ export default function PropertyForm() {
               </span>
               ĐIỀU CHỈNH ĐỊNH LƯỢNG
             </h2>
+             <div className="ml-3">
             {renderTable(
               GENERAL_FIELDS,
               general,
@@ -701,6 +702,7 @@ export default function PropertyForm() {
               "THÔNG TIN CHUNG"
             )}
             {renderTable(VALUE_FIELDS, value, setValueField, "GIÁ TRỊ TÀI SẢN")}
+            </div>
           </section>
 
           <section>
@@ -710,6 +712,7 @@ export default function PropertyForm() {
               </span>
               BẢNG ĐIỀU CHỈNH VÀ THÔNG SỐ KỸ THUẬT
             </h2>
+            <div className="ml-3">
             {renderTable(
               ADJUST_FIELDS,
               adjust,
@@ -717,6 +720,7 @@ export default function PropertyForm() {
               "CÁC TIÊU CHÍ",
               value
             )}
+            </div>
           </section>
 
           <section>
@@ -726,7 +730,9 @@ export default function PropertyForm() {
               </span>
               KẾT QUẢ & GHI CHÚ
             </h2>
+             <div className="ml-3">
             {renderTable(FINAL_FIELDS, final, () => {}, "KẾT QUẢ & GHI CHÚ")}
+            </div>
           </section>
         </div>
 
