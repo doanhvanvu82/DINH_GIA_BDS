@@ -339,7 +339,7 @@ export default function PropertyForm() {
 
     for (let i = 0; i < loadingSteps.length; i++) {
       setLoadingStep(loadingSteps[i]);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     setLoadingStep("Đang điền dữ liệu vào báo cáo...");
@@ -461,10 +461,20 @@ export default function PropertyForm() {
       let displayValue = value;
       if (isAdjustRatio && colIdx === 1) {
         if (isAIEstimated) {
-          // Lấy land_unit_price của Định giá AI
-          const landUnitPriceAI = valueData && valueData[1] && valueData[1].land_unit_price;
-          if (isNumberValue(landUnitPriceAI)) {
-            displayValue = '0';
+          // Lấy tỷ lệ điều chỉnh trung bình 3 cột TS so sánh
+          const v2 = adjust[2][field.key];
+          const v3 = adjust[3][field.key];
+          const v4 = adjust[4][field.key];
+          if (isNumberValue(v2) && isNumberValue(v3) && isNumberValue(v4)) {
+            const n2 = parseFloat((v2 + '').replace('%','').replace(',','.'));
+            const n3 = parseFloat((v3 + '').replace('%','').replace(',','.'));
+            const n4 = parseFloat((v4 + '').replace('%','').replace(',','.'));
+            if (!isNaN(n2) && !isNaN(n3) && !isNaN(n4)) {
+              const avg = ((n2 + n3 + n4) / 3).toFixed(2);
+              displayValue = avg + (v2.includes('%') || v3.includes('%') || v4.includes('%') ? '%' : '');
+            } else {
+              displayValue = '';
+            }
           } else {
             displayValue = '';
           }
@@ -480,22 +490,73 @@ export default function PropertyForm() {
           const prefix = field.key.replace(/_(adjust|price)$/, '');
           const ratioKey = `${prefix}_ratio`;
           const landUnitPriceAI = valueData && valueData[1] && valueData[1].land_unit_price;
-          const ratioVal = adjust[1][ratioKey];
-          if (isNumberValue(landUnitPriceAI)) {
+          // Lấy tỷ lệ điều chỉnh trung bình 3 cột TS so sánh
+          let ratioVal = '';
+          const v2 = adjust[2][ratioKey];
+          const v3 = adjust[3][ratioKey];
+          const v4 = adjust[4][ratioKey];
+          if (isNumberValue(v2) && isNumberValue(v3) && isNumberValue(v4)) {
+            const n2 = parseFloat((v2 + '').replace('%','').replace(',','.'));
+            const n3 = parseFloat((v3 + '').replace('%','').replace(',','.'));
+            const n4 = parseFloat((v4 + '').replace('%','').replace(',','.'));
+            if (!isNaN(n2) && !isNaN(n3) && !isNaN(n4)) {
+              ratioVal = ((n2 + n3 + n4) / 3).toFixed(2);
+            }
+          }
+          if (isNumberValue(landUnitPriceAI) && isNumberValue(ratioVal)) {
             const v = parseFloat((landUnitPriceAI + '').replace(/,/g, ''));
             const r = parseFloat((ratioVal + '').replace('%','').replace(',','.'));
             if (!isNaN(v) && !isNaN(r)) {
               if (field.key.endsWith('_adjust')) {
                 displayValue = (v * r / 100).toFixed(0);
               } else if (field.key.endsWith('_price')) {
-                // Giá sau điều chỉnh = land_unit_price - mức điều chỉnh
-                const adjustVal = v * r / 100;
-                displayValue = (v - adjustVal).toFixed(0);
+                // Tính lũy kế: giá sau điều chỉnh của tiêu chí tiếp theo = giá sau điều chỉnh của tiêu chí trước + mức điều chỉnh tiếp theo
+                // Tìm vị trí tiêu chí hiện tại trong ADJUST_FIELDS
+                let prevPrice = v;
+                let found = false;
+                for (const group of ADJUST_FIELDS) {
+                  for (let i = 0; i < group.fields.length; i++) {
+                    const f = group.fields[i];
+                    if (f.key === field.key) {
+                      found = true;
+                      break;
+                    }
+                    if (f.key.endsWith('_price')) {
+                      // Lấy mức điều chỉnh của tiêu chí trước đó
+                      const prevPrefix = f.key.replace('_price', '');
+                      const prevAdjustKey = `${prevPrefix}_adjust`;
+                      let prevAdjust = '';
+                      // Tính lại tỷ lệ trung bình cho tiêu chí trước đó
+                      const prevRatioKey = `${prevPrefix}_ratio`;
+                      let prevRatioVal = '';
+                      const pv2 = adjust[2][prevRatioKey];
+                      const pv3 = adjust[3][prevRatioKey];
+                      const pv4 = adjust[4][prevRatioKey];
+                      if (isNumberValue(pv2) && isNumberValue(pv3) && isNumberValue(pv4)) {
+                        const pn2 = parseFloat((pv2 + '').replace('%','').replace(',','.'));
+                        const pn3 = parseFloat((pv3 + '').replace('%','').replace(',','.'));
+                        const pn4 = parseFloat((pv4 + '').replace('%','').replace(',','.'));
+                        if (!isNaN(pn2) && !isNaN(pn3) && !isNaN(pn4)) {
+                          prevRatioVal = ((pn2 + pn3 + pn4) / 3).toFixed(2);
+                        }
+                      }
+                      if (isNumberValue(prevRatioVal)) {
+                        const pr = parseFloat((prevRatioVal + '').replace('%','').replace(',','.'));
+                        if (!isNaN(pr)) {
+                          prevAdjust = (prevPrice * pr / 100).toFixed(0);
+                          prevPrice = prevPrice + parseFloat(prevAdjust);
+                        }
+                      }
+                    }
+                  }
+                  if (found) break;
+                }
+                // Tính mức điều chỉnh hiện tại
+                const thisAdjust = (prevPrice * r / 100);
+                displayValue = (prevPrice + thisAdjust).toFixed(0);
               }
             } else {
-              // Nếu không có tỷ lệ, mức điều chỉnh là 0, giá sau điều chỉnh là land_unit_price
-              if (field.key.endsWith('_adjust')) displayValue = '0';
-              if (field.key.endsWith('_price')) displayValue = v.toFixed(0);
+              displayValue = '';
             }
           } else {
             displayValue = '';
@@ -584,14 +645,14 @@ export default function PropertyForm() {
                             {data.map((col, colIdx) => (
                               <td key={colIdx} className="p-2 border-r border-border bg-white">
                                 {renderCell(subField, col, colIdx)}
-                              </td>
+                                </td>
                             ))}
                           </tr>
                         ))}
                       </Fragment>
                     );
                   }
-  
+
                   // Xử lý các hàng thường (không có nhóm)
                   const field = fieldOrGroup;
                   // ✅ KIỂM TRA ĐIỀU KIỆN GỘP Ô TẠI ĐÂY
@@ -631,7 +692,7 @@ export default function PropertyForm() {
                         return (
                           <td key={colIdx} className={isFinalTable ? "p-2 border-r border-border bg-input-readonly" : "p-2 border-r border-border bg-white"}>
                             {renderCell(field, col, colIdx)}
-                          </td>
+                        </td>
                         );
                       })}
                     </tr>
