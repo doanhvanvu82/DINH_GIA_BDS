@@ -339,7 +339,7 @@ export default function PropertyForm() {
 
     for (let i = 0; i < loadingSteps.length; i++) {
       setLoadingStep(loadingSteps[i]);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
     setLoadingStep("Đang điền dữ liệu vào báo cáo...");
